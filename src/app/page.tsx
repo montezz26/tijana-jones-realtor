@@ -121,9 +121,19 @@ const REVIEWS = [
   },
 ];
 
-type Area = { name: string; blurb: string; range: string; detail: string };
+type Area = {
+  name: string;
+  blurb: string;
+  range: string;
+  detail: string;
+  img: string;
+  credit: string;
+  license: string;
+  creditUrl: string;
+};
 
 // Tijana's service areas (from the marquee). Price ranges are illustrative.
+// Photos: Wikimedia Commons, credited per image (CC BY / CC BY-SA).
 const AREAS: Area[] = [
   {
     name: "Austin",
@@ -131,6 +141,10 @@ const AREAS: Area[] = [
     range: "$450K–$2M+",
     detail:
       "From downtown high-rises to established leafy neighborhoods, Austin offers every lifestyle and stays in constant demand. Tijana knows which pockets fit your budget and your day-to-day.",
+    img: "/areas/austin.jpg",
+    credit: "Jonathan Cutrer",
+    license: "CC BY 2.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Austin_Texas_Downtown_Skyline_at_Night_(10555159946).jpg",
   },
   {
     name: "Lakeway",
@@ -138,6 +152,10 @@ const AREAS: Area[] = [
     range: "$600K–$3M+",
     detail:
       "A favorite for luxury buyers and second homes, Lakeway pairs lakeside recreation with gated communities and championship golf, just 30 minutes from downtown.",
+    img: "/areas/lakeway.jpg",
+    credit: "Trey Perry",
+    license: "CC BY 3.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Lake_Travis_at_Capacity.jpg",
   },
   {
     name: "Round Rock",
@@ -145,6 +163,10 @@ const AREAS: Area[] = [
     range: "$350K–$700K",
     detail:
       "Round Rock blends highly-rated schools, master-planned neighborhoods, and easy access to Austin's tech employers — a reliable pick for families and steady appreciation.",
+    img: "/areas/round-rock.jpg",
+    credit: "Another Believer",
+    license: "CC BY-SA 4.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Round_Rock,_Texas,_2021_-_25.jpg",
   },
   {
     name: "Georgetown",
@@ -152,6 +174,10 @@ const AREAS: Area[] = [
     range: "$350K–$800K",
     detail:
       "Anchored by one of Texas's prettiest courthouse squares and the popular Sun City 55+ community, Georgetown offers warmth and value just north of Austin.",
+    img: "/areas/georgetown.jpg",
+    credit: "25or6to4",
+    license: "CC BY-SA 4.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Williamson_County_Courthouse_(2018),_Georgetown,_TX.jpg",
   },
   {
     name: "Liberty Hill",
@@ -159,6 +185,10 @@ const AREAS: Area[] = [
     range: "$350K–$900K",
     detail:
       "One of the area's fastest-growing communities — newer construction and larger lots for buyers who want space at the edge of the Hill Country.",
+    img: "/areas/liberty-hill.jpg",
+    credit: "Larry D. Moore",
+    license: "CC BY 4.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Overlook_View_Hill_Country_SNA_Texas_2023.jpg",
   },
   {
     name: "Kyle",
@@ -166,6 +196,10 @@ const AREAS: Area[] = [
     range: "$280K–$500K",
     detail:
       "A standout for value, Kyle offers newer homes at accessible price points with quick I-35 access to both Austin and San Marcos.",
+    img: "/areas/kyle.jpg",
+    credit: "Liveon001 / Travis Witt",
+    license: "CC BY-SA 3.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Kyle_Texas.JPG",
   },
   {
     name: "Buda",
@@ -173,6 +207,10 @@ const AREAS: Area[] = [
     range: "$300K–$550K",
     detail:
       "Buda keeps its small-town character while sitting minutes from south Austin — a local favorite for first-time buyers and move-up families.",
+    img: "/areas/buda.jpg",
+    credit: "Travis K. Witt",
+    license: "CC BY-SA 4.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Buda_Texas_Historic_Downtown.JPG",
   },
   {
     name: "Manor",
@@ -180,6 +218,10 @@ const AREAS: Area[] = [
     range: "$280K–$450K",
     detail:
       "East of the city, Manor is one of the metro's best-value stories, with new master-planned neighborhoods and fast growth.",
+    img: "/areas/manor.jpg",
+    credit: "8bit12man",
+    license: "CC BY-SA 4.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Bluebonnet_and_Indian_Paintbrush_Field_2024.jpg",
   },
   {
     name: "Jonestown",
@@ -187,6 +229,10 @@ const AREAS: Area[] = [
     range: "$350K–$1.2M",
     detail:
       "Tucked on the north shore of Lake Travis, Jonestown offers relaxed lakeside living and Hill Country views with weekend access to the water.",
+    img: "/areas/jonestown.jpg",
+    credit: "G. Lamar",
+    license: "CC BY 2.0",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Sunset_Lake_LCRA_(50936983963).jpg",
   },
 ];
 
@@ -312,7 +358,7 @@ export default function Home() {
   const [showSticky, setShowSticky] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [openArea, setOpenArea] = useState<number | null>(0);
+  const [openArea, setOpenArea] = useState(0); // one area is always selected/open
   const [counts, setCounts] = useState({ homes: 365, vol: 102, yrs: 7, rev: 44 });
 
   // Animated stat counters (respects prefers-reduced-motion)
@@ -604,27 +650,28 @@ export default function Home() {
             <h2 className="h2" style={{ margin: "0 0 14px" }}>Every corner of greater Austin. One agent who knows them all.</h2>
             <p className="lead">From Lake Travis luxury to fast-growing suburbs — pick an area to see the vibe and what homes typically run.</p>
           </div>
-          <div data-reveal style={{ maxWidth: 820, margin: "0 auto" }}>
-            <div className="card" style={{ overflow: "hidden" }}>
+          <div data-reveal data-m="areasgrid" style={{ display: "grid", gridTemplateColumns: "0.92fr 1.08fr", gap: 28, alignItems: "stretch", maxWidth: 1100, margin: "0 auto" }}>
+            {/* LEFT — area list, one always selected/open */}
+            <div className="card" style={{ overflow: "hidden", alignSelf: "start" }}>
               {AREAS.map((a, idx) => {
-                const open = openArea === idx;
+                const active = openArea === idx;
                 return (
                   <div key={a.name} style={{ borderTop: idx === 0 ? "none" : "1px solid #ECE8DF" }}>
                     <button
-                      onClick={() => setOpenArea(open ? null : idx)}
-                      aria-expanded={open}
-                      style={{ width: "100%", background: open ? "#FCFBF8" : "#fff", border: 0, cursor: "pointer", padding: "20px 24px", display: "flex", alignItems: "center", gap: 16, textAlign: "left", transition: "background 160ms ease" }}
+                      onClick={() => setOpenArea(idx)}
+                      aria-expanded={active}
+                      style={{ width: "100%", background: active ? "#FCFBF8" : "#fff", border: 0, cursor: "pointer", padding: "18px 22px", display: "flex", alignItems: "center", gap: 14, textAlign: "left", transition: "background 160ms ease" }}
                     >
                       <span style={{ flex: 1, minWidth: 0 }}>
-                        <span className="ff-arch" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, letterSpacing: "-0.01em", color: "#1C1613" }}>{a.name}</span>
-                        <span style={{ display: "block", fontSize: "0.9375rem", color: "#6B5F52", marginTop: 3 }}>{a.blurb}</span>
+                        <span className="ff-arch" style={{ display: "block", fontSize: "1.1rem", fontWeight: 800, letterSpacing: "-0.01em", color: active ? "#1C1613" : "#3D332A" }}>{a.name}</span>
+                        <span style={{ display: "block", fontSize: "0.9rem", color: "#6B5F52", marginTop: 3 }}>{a.blurb}</span>
                       </span>
-                      <span className="ff-arch" style={{ fontWeight: 800, color: "#B49B67", fontSize: "0.95rem", whiteSpace: "nowrap", fontFeatureSettings: "'tnum'" }}>{a.range}</span>
-                      <ChevronIcon open={open} />
+                      <span className="ff-arch" style={{ fontWeight: 800, color: "#B49B67", fontSize: "0.9rem", whiteSpace: "nowrap", fontFeatureSettings: "'tnum'" }}>{a.range}</span>
+                      <ChevronIcon open={active} />
                     </button>
-                    {open && (
-                      <div style={{ padding: "0 24px 22px" }}>
-                        <p style={{ color: "#3D332A", margin: "0 0 14px", maxWidth: 640 }}>{a.detail}</p>
+                    {active && (
+                      <div style={{ padding: "0 22px 20px" }}>
+                        <p style={{ color: "#3D332A", fontSize: "0.9375rem", margin: "0 0 14px" }}>{a.detail}</p>
                         <a href="#contact" className="btn btn-dark btn-sm">Explore {a.name} with Tijana</a>
                       </div>
                     )}
@@ -632,8 +679,26 @@ export default function Home() {
                 );
               })}
             </div>
-            <p style={{ fontSize: "0.8125rem", color: "#948875", textAlign: "center", marginTop: 16 }}>Price ranges are illustrative and vary by home, condition, and market.</p>
+            {/* RIGHT — image of the selected area (fills the panel) */}
+            <div className="card" style={{ position: "relative", overflow: "hidden", minHeight: 460, border: "none" }}>
+              {AREAS.map((a, idx) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={a.name}
+                  src={a.img}
+                  alt={`${a.name}, Texas`}
+                  loading="lazy"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: openArea === idx ? 1 : 0, transition: "opacity 500ms ease" }}
+                />
+              ))}
+              <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: "48px 22px 20px", background: "linear-gradient(to top, rgba(23,19,16,0.8), transparent)", pointerEvents: "none" }}>
+                <div className="ff-arch" style={{ color: "#fff", fontWeight: 900, fontSize: "1.6rem", letterSpacing: "-0.015em", textShadow: "0 2px 14px rgba(0,0,0,0.45)" }}>{AREAS[openArea].name}</div>
+                <div className="ff-arch" style={{ color: "#F3E3C3", fontWeight: 800, fontSize: "0.95rem", marginTop: 2, textShadow: "0 2px 10px rgba(0,0,0,0.45)" }}>{AREAS[openArea].range}</div>
+              </div>
+              <a href={AREAS[openArea].creditUrl} target="_blank" rel="noopener" style={{ position: "absolute", right: 10, bottom: 10, fontSize: "0.66rem", color: "rgba(255,255,255,0.75)", background: "rgba(0,0,0,0.4)", padding: "3px 8px", borderRadius: 6 }}>Photo: {AREAS[openArea].credit} · {AREAS[openArea].license} · Wikimedia</a>
+            </div>
           </div>
+          <p style={{ fontSize: "0.8125rem", color: "#948875", textAlign: "center", marginTop: 16 }}>Price ranges are illustrative. Area photos via Wikimedia Commons — credited on each image.</p>
         </div>
       </section>
 

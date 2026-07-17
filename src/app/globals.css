@@ -415,7 +415,8 @@ textarea.field {
   [data-m="hero"],
   [data-m="grid2"],
   [data-m="gridrent"],
-  [data-m="footgrid"] {
+  [data-m="footgrid"],
+  [data-m="areasgrid"] {
     grid-template-columns: 1fr !important;
   }
   [data-m="grid4"],
