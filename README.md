@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tijana Jones · Austin Luxury Real Estate
 
-## Getting Started
+Single-page marketing site for **Tijana Jones**, luxury real-estate agent (eXp Realty / eXp Luxury, CK Residential Group) serving greater Austin, TX.
 
-First, run the development server:
+> **Demo site.** Listings, statistics, and reviews are illustrative. Reviews are republished from Zillow and belong to their authors. Not affiliated with Zillow®, eXp Realty®, or eXp Luxury. The site is set to `noindex`.
+
+## Stack
+
+- **Next.js 16** (App Router, `src/`, Turbopack) · **React 19** · **TypeScript**
+- **Tailwind v4** installed; page styling is a hand-rolled design system in `src/app/globals.css`
+- Fonts: **Archivo** + **Manrope** via `next/font`
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Editing content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Most copy is data-driven at the top of `src/app/page.tsx`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `SALE_LISTINGS` / `RENT_LISTING` — current listings
+- `SOLD_LISTINGS` — recently-sold cards (tagged Buyer's-agent / Seller's-agent)
+- `REVIEWS` — client reviews (role-based attributions)
+- Contact details, service areas, and the YouTube link are constants near the top
 
-## Learn More
+Listing/portrait images live in `public/`. The favicon is `src/app/icon.svg` (TJ monogram).
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Hosted on **Vercel** (production: <https://tijana-jones-realtor.vercel.app>). Connected to this repo — **pushing to `main` triggers a production deploy**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## To do
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Wire the contact form to email/CRM (currently front-end only, shows a success state)
+- Swap the Meet-Tijana video to a self-hosted `<video>` (YouTube embedding is disabled on the source video)
