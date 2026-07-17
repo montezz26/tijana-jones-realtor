@@ -9,8 +9,9 @@ import { useEffect, useState, type CSSProperties } from "react";
 const PHONE_DISPLAY = "(512) 808-3699";
 const PHONE_HREF = "tel:+15128083699";
 const EMAIL = "tijana.jones@exprealty.com";
-const YOUTUBE_URL = "https://www.youtube.com/watch?v=PWovhygLE4g";
-const YOUTUBE_THUMB = "https://img.youtube.com/vi/PWovhygLE4g/maxresdefault.jpg";
+const YOUTUBE_ID = "PWovhygLE4g";
+const YOUTUBE_URL = `https://www.youtube.com/watch?v=${YOUTUBE_ID}`;
+const YOUTUBE_THUMB = `https://img.youtube.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`;
 const OFFICE = "9600 Great Hills Trail, Suite 150, Austin, TX 78759";
 
 const SERVICE_AREAS = [
@@ -68,6 +69,17 @@ const SALE_LISTINGS: Listing[] = [
     address: "3701 Mesquite Valley Rd, Austin, TX",
     cta: "Ask about this home",
   },
+];
+
+const ZILLOW_PROFILE = "https://www.zillow.com/profile/tiusa551";
+
+type Sold = { role: "Seller" | "Buyer"; address: string; city: string; specs: string; sold: string };
+
+// Confirmed Texas closings pulled from Zillow. Add more here as they're provided;
+// `role` drives the "Seller's agent" / "Buyer's agent" tag.
+const SOLD_LISTINGS: Sold[] = [
+  { role: "Seller", address: "3206 Wildcatter Dr", city: "Belton, TX", specs: "3 bd · 2 ba · 1,883 sqft", sold: "Sold Dec 2025" },
+  { role: "Buyer", address: "1322 Yellow Rose", city: "Salado, TX", specs: "4 bd · 2 ba · 2,368 sqft", sold: "Sold May 2025" },
 ];
 
 const RENT_LISTING: Listing = {
@@ -329,6 +341,7 @@ export default function Home() {
             <a className="nav-link" href="#video">Meet Tijana</a>
             <a className="nav-link" href="#why">Why Tijana</a>
             <a className="nav-link" href="#listings">Listings</a>
+            <a className="nav-link" href="#sold">Sold</a>
             <a className="nav-link" href="#reviews">Reviews</a>
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginLeft: "auto" }}>
@@ -361,6 +374,7 @@ export default function Home() {
               { href: "#video", label: "Meet Tijana" },
               { href: "#why", label: "Why Tijana" },
               { href: "#listings", label: "Listings" },
+              { href: "#sold", label: "Sold" },
               { href: "#reviews", label: "Reviews" },
             ].map((l) => (
               <a key={l.href} href={l.href} onClick={closeMenu} className="ff-arch" style={{ fontWeight: 800, fontSize: "1.05rem", color: "#1C1613", padding: "12px 4px", borderBottom: "1px solid #ECE8DF" }}>
@@ -458,6 +472,7 @@ export default function Home() {
         </div>
         <div data-m="grid2" className="container" style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: 56, alignItems: "center" }}>
           <div data-reveal style={{ position: "relative" }}>
+            {/* Link-out until the self-hosted MP4 is provided, then swap to a native <video> player. */}
             <a href={YOUTUBE_URL} target="_blank" rel="noopener" className="video-card" style={{ position: "relative", display: "block", borderRadius: 20, overflow: "hidden", aspectRatio: "16/9", background: "#171310" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={YOUTUBE_THUMB} alt="Watch: Meet Tijana Jones on YouTube" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
@@ -539,8 +554,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ RECENTLY SOLD ============ */}
+      <section id="sold" className="section" style={{ background: "#FCFBF8" }}>
+        <div className="container">
+          <div data-reveal style={{ maxWidth: 760, margin: "0 auto 48px", textAlign: "center" }}>
+            <div className="kicker">Track record</div>
+            <h2 className="h2" style={{ margin: "0 0 14px" }}>Recently sold — for buyers and sellers alike.</h2>
+            <p className="lead">A snapshot of recent Central Texas closings. Tijana works both sides of the deal — see her full history of 365+ homes on Zillow.</p>
+          </div>
+          <div data-m="grid4" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 24, maxWidth: 720, margin: "0 auto" }}>
+            {SOLD_LISTINGS.map((s) => (
+              <SoldCard key={s.address} s={s} />
+            ))}
+          </div>
+          <div data-reveal style={{ textAlign: "center", marginTop: 36 }}>
+            <a href={ZILLOW_PROFILE} target="_blank" rel="noopener" className="btn btn-ghost btn-md">See all of Tijana&apos;s sold homes on Zillow ↗</a>
+          </div>
+        </div>
+      </section>
+
       {/* ============ REVIEWS ============ */}
-      <section id="reviews" className="section" style={{ background: "#FCFBF8" }}>
+      <section id="reviews" className="section" style={{ background: "#FFFFFF" }}>
         <div className="container">
           <div data-reveal style={{ maxWidth: 720, margin: "0 auto 48px", textAlign: "center" }}>
             <div className="kicker">Client reviews</div>
@@ -723,6 +757,28 @@ function Field({ label, required, optional, children }: { label: string; require
       </span>
       {children}
     </label>
+  );
+}
+
+function SoldCard({ s }: { s: Sold }) {
+  const isSeller = s.role === "Seller";
+  return (
+    <div data-reveal className="card card-lift" style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", height: 172, background: "linear-gradient(135deg, #211B15, #241C15)", display: "grid", placeItems: "center", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(420px 200px at 80% 12%, rgba(217,164,65,0.28), transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+          <Logo size={62} stroke="#D8C08A" width={5} />
+          <span className="ff-arch" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.28em", textIndent: "0.28em" }}>SOLD</span>
+        </div>
+        <span className="pill" style={isSeller ? { background: "#C8102E", boxShadow: "0 6px 16px rgba(200,16,46,0.4)" } : { background: "#D8C08A", color: "#1C1613" }}>{isSeller ? "Seller's agent" : "Buyer's agent"}</span>
+      </div>
+      <div style={{ padding: "20px 22px 22px", display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
+        <div className="ff-arch" style={{ fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#B49B67" }}>{s.sold}</div>
+        <div className="ff-arch" style={{ fontSize: "1.15rem", fontWeight: 900, letterSpacing: "-0.01em", color: "#1C1613" }}>{s.address}</div>
+        <div style={{ fontSize: "0.9375rem", color: "#6B5F52" }}>{s.city}</div>
+        <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#3D332A", marginTop: 2 }}>{s.specs}</div>
+      </div>
+    </div>
   );
 }
 
