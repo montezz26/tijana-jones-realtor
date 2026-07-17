@@ -98,26 +98,26 @@ const REVIEWS = [
   {
     quote:
       "Tijana went above and beyond for our family, just like she does for all her clients. She made buying our first home in a seller's market stress-free and helped us get the home we wanted.",
-    name: "The Martinez Family",
-    meta: "Bought a first home · Austin, TX",
+    name: "Bought a first home",
+    meta: "Verified Zillow review · Austin, TX",
   },
   {
     quote:
       "What drew us to Tijana was how fast her previous listings sold — in a matter of three days we were under contract, and in less than a month we were closed.",
-    name: "James & Lauren H.",
-    meta: "Sold a single-family home · Austin, TX",
+    name: "Sold a single-family home",
+    meta: "Verified Zillow review · Austin, TX",
   },
   {
     quote:
       "I wish I could give this gem 10 stars… or 15… or 20!! Tijana is one in a million. She improvises and adapts to any situation that may arise, pivots, and then navigates through.",
-    name: "Sarah W.",
-    meta: "Sold a single-family home · Austin, TX",
+    name: "Sold a single-family home",
+    meta: "Verified Zillow review · Austin, TX",
   },
   {
     quote:
       "Tijana is simply on a different level. Calm under pressure, and exceptional in every detail. When it matters the most, she is the one you want.",
-    name: "Kimberly & Mark S.",
-    meta: "eXp Luxury client · Austin, TX",
+    name: "eXp Luxury client",
+    meta: "Verified Zillow review · Austin, TX",
   },
 ];
 
