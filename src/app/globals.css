@@ -1,26 +1,393 @@
-@import "tailwindcss";
+/* ============================================================
+   Tijana Jones Real Estate — landing page design system
+   Base + fonts + keyframes + responsive rules + component classes.
+   One-off layout stays inline in page.tsx; recurring patterns and
+   anything inline styles can't express (:hover/:focus, @keyframes,
+   media queries, scroll-reveal) live here.
+   ============================================================ */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-manrope), "Manrope", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #1c1613;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: #b49b67;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* section anchors clear the fixed 76px header */
+section[id] {
+  scroll-margin-top: 72px;
+}
+
+.ff-arch {
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+}
+
+/* ---------- layout ---------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 96px 0;
+}
+
+/* ---------- typography ---------- */
+.kicker {
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b49b67;
+  margin-bottom: 12px;
+}
+.kicker-gold {
+  color: #d8c08a;
+}
+
+.h2 {
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: #1c1613;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lead {
+  color: #6b5f52;
+  font-size: clamp(1.125rem, 1.6vw, 1.3rem);
+  line-height: 1.5;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  border: 0;
+  cursor: pointer;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 120ms ease, transform 120ms ease, box-shadow 120ms ease,
+    color 120ms ease;
+}
+.btn-sm {
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+}
+.btn-md {
+  padding: 14px 22px;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+.btn-lg {
+  padding: 18px 28px;
+  font-size: 1.1rem;
+  border-radius: 14px;
+}
+
+.btn-red {
+  background: #c8102e;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(200, 16, 46, 0.38);
+}
+.btn-red:hover {
+  background: #a50d24;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(200, 16, 46, 0.46);
+}
+.btn-red:active {
+  background: #850a1d;
+  transform: scale(0.985);
+}
+
+.btn-dark {
+  background: #241c15;
+  color: #fff;
+}
+.btn-dark:hover {
+  background: #3a2e24;
+  color: #fff;
+  transform: translateY(-2px);
+}
+.btn-dark:active {
+  transform: scale(0.985);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #1c1613;
+  box-shadow: inset 0 0 0 2px #d6cdbd;
+}
+.btn-ghost:hover {
+  color: #1c1613;
+  box-shadow: inset 0 0 0 2px #1c1613;
+  transform: translateY(-1px);
+}
+
+.btn-ghost-light {
+  background: transparent;
+  color: #fff;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.4);
+}
+.btn-ghost-light:hover {
+  color: #fff;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+/* ---------- cards ---------- */
+.card {
+  background: #fff;
+  border: 1px solid #ece8df;
+  border-radius: 20px;
+  box-shadow: 0 1px 0 #ece8df, 0 10px 30px rgba(28, 22, 19, 0.08);
+}
+.card-lift {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(28, 22, 19, 0.14), 0 4px 8px rgba(28, 22, 19, 0.08);
+}
+
+.video-card {
+  transition: box-shadow 220ms ease;
+  box-shadow: 0 12px 32px rgba(28, 22, 19, 0.14), 0 4px 8px rgba(28, 22, 19, 0.08);
+}
+.video-card:hover {
+  box-shadow: 0 16px 40px rgba(28, 22, 19, 0.22), 0 4px 10px rgba(28, 22, 19, 0.1);
+}
+
+/* ---------- listing status pills ---------- */
+.pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.pill-red {
+  background: #c8102e;
+  box-shadow: 0 6px 16px rgba(200, 16, 46, 0.4);
+}
+.pill-dark {
+  background: #211b15;
+}
+.pill-green {
+  background: #16a34a;
+}
+
+/* ---------- nav links ---------- */
+.nav-link {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3d332a;
+  white-space: nowrap;
+  transition: color 120ms ease;
+}
+.nav-link:hover {
+  color: #c8102e;
+}
+
+/* ---------- contact links (on dark) ---------- */
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+}
+.contact-link:hover,
+.contact-link:hover b,
+.contact-link:hover small {
+  color: #d8c08a;
+}
+
+/* ---------- form fields ---------- */
+.field {
+  font-family: var(--font-manrope), "Manrope", sans-serif;
+  font-size: 1rem;
+  color: #1c1613;
+  padding: 13px 14px;
+  border: 1.5px solid #d6cdbd;
+  border-radius: 10px;
+  background: #fff;
+  width: 100%;
+}
+.field:focus {
+  outline: none;
+  border-color: #b49b67;
+  box-shadow: 0 0 0 4px #f6efdf;
+}
+textarea.field {
+  resize: vertical;
+}
+
+/* ---------- keyframes ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes heroZoom {
+  from {
+    transform: scale(1.045);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(200, 16, 46, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(200, 16, 46, 0);
+  }
+}
+
+.pulse-on-load {
+  animation: pulseRing 2.6s ease-out 1.4s 3;
+}
+
+/* ---------- scroll reveal ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-reveal].reveal-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- responsive: desktop nav <-> hamburger at 1080px ---------- */
+.nav-desktop {
+  display: flex;
+}
+.nav-burger {
+  display: none;
+}
+@media (max-width: 1080px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-burger {
+    display: inline-flex !important;
+  }
+}
+
+/* ---------- responsive layout (mirrors the design breakpoints) ---------- */
+@media (max-width: 960px) {
+  [data-m="hero"],
+  [data-m="grid2"],
+  [data-m="gridrent"],
+  [data-m="footgrid"] {
+    grid-template-columns: 1fr !important;
+  }
+  [data-m="grid4"],
+  [data-m="grid3"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  [data-m="stats"] {
+    grid-template-columns: repeat(2, auto) !important;
+    gap: 20px 44px !important;
+  }
+  [data-m="portrait"] {
+    justify-self: center !important;
+  }
+  [data-m="badge-l"] {
+    left: 8px !important;
+  }
+  [data-m="badge-r"] {
+    right: 8px !important;
+  }
+}
+@media (max-width: 640px) {
+  [data-m="grid4"],
+  [data-m="grid3"] {
+    grid-template-columns: 1fr !important;
+  }
+  [data-m="callnum"],
+  [data-m="stickycopy"] {
+    display: none !important;
+  }
+  [data-m="formgrid"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
 }
