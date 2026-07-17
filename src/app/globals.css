@@ -215,6 +215,27 @@ section[id] {
   }
 }
 
+/* per-listing demo ribbon: diagonal across the top-right corner of each card photo */
+.listing-demo-ribbon {
+  position: absolute;
+  top: 16px;
+  right: -40px;
+  width: 150px;
+  transform: rotate(45deg);
+  background: rgba(23, 19, 16, 0.92);
+  color: #f3e3c3;
+  font-family: var(--font-archivo), "Archivo", sans-serif;
+  font-weight: 800;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 5px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
 /* ---------- cards ---------- */
 .card {
   background: #fff;

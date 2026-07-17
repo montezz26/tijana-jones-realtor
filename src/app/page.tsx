@@ -818,6 +818,7 @@ function ListingCard({ listing, mediaHeight, reveal }: { listing: Listing; media
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={listing.img} alt={listing.alt} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
         <span className={`pill ${listing.pillClass}`}>{listing.pill}</span>
+        <span className="listing-demo-ribbon" aria-hidden>Demo</span>
       </div>
       <div style={{ padding: "22px 22px 20px", display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
         <div className="ff-arch" style={{ fontWeight: 900, fontSize: "1.5rem", letterSpacing: "-0.02em", color: "#1C1613", fontFeatureSettings: "'tnum'" }}>
